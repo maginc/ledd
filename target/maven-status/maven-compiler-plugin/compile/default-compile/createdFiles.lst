@@ -1,2 +1,1 @@
-com\ragazm\ledd\Application.class
-com\ragazm\ledd\controller\LEDController.class
+com\ragazm\ledd\sensors\BME280.class
