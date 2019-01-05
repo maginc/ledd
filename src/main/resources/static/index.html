@@ -8,15 +8,46 @@
 <h1>Sup?</h1>
 
 <button onclick="myFunction()">Click me</button>
+
+<h2>This table has no borders:</h2>
+<table>
+    <tr>
+        <td>Temperature: </td>
+        <td id="temperature">No data</td>
+    </tr>
+    <tr>
+        <td>Humidity: </td>
+        <td id="humidity">No data</td>
+    </tr>
+</table>
+
 <p id="text">Sample text</p>
+
 
 <script>
 
+    setInterval(function(){
+        getSensorValues()
+    }, 2000);
+
+
     function myFunction() {
-
         document.getElementById("text").innerHTML = "fuck it";
+    }
 
+    function getSensorValues() {
 
+        fetch('/sensors')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                var object = JSON.stringify(myJson)
+
+                document.getElementById("temperature").innerHTML = myJson.temperature;
+                document.getElementById("humidity").innerHTML = myJson.humidity;
+
+            });
     }
 
 
