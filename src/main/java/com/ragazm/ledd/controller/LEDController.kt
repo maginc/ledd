@@ -31,6 +31,7 @@ class LEDController {
     }
 
     companion object {
+
         var pin: GpioPinDigitalOutput? = null
     }
 
