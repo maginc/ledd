@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class LEDController {
 
-    @RequestMapping("/")
-    fun greeting() = "Hello Bitch!!"
+   // @RequestMapping("/")
+    //fun greeting() = "index"
 
 
     @RequestMapping("/temperature")
