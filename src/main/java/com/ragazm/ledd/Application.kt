@@ -6,7 +6,6 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 open class Application
-    //@JvmStatic
 
     fun main(args: Array<String>) {
         runApplication<Application>(*args)
