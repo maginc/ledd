@@ -5,6 +5,8 @@ import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 
 
 public class BME280
@@ -14,7 +16,7 @@ public class BME280
 
     }
 
-    public static void sensor() throws IOException, I2CFactory.UnsupportedBusNumberException {
+    public static HashMap sensor() throws IOException, I2CFactory.UnsupportedBusNumberException {
         // Create I2C bus
         I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
         // Get I2C device, BME280 I2C address is 0x76(108)
@@ -167,10 +169,15 @@ public class BME280
         }
 
         // Output data to screen
-        System.out.printf("Temperature in Celsius : %.2f C %n", cTemp);
-        System.out.printf("Temperature in Fahrenheit : %.2f F %n", fTemp);
-        System.out.printf("Pressure : %.2f hPa %n", pressure);
-        System.out.printf("Relative Humidity : %.2f %% RH %n", humidity);
-        System.out.println("*********************************************");
+       // System.out.printf("Temperature in Celsius : %.2f C %n", cTemp);
+       // System.out.printf("Temperature in Fahrenheit : %.2f F %n", fTemp);
+       // System.out.printf("Pressure : %.2f hPa %n", pressure);
+       // System.out.printf("Relative Humidity : %.2f %% RH %n", humidity);
+       // System.out.println("*********************************************");
+
+        HashMap<String, Double> hashMap = new HashMap<>();
+        hashMap.put("Temperature",cTemp);
+        hashMap.put("Humidity", humidity);
+        return hashMap;
     }
 }

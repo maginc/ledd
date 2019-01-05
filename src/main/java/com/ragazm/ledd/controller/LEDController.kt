@@ -1,6 +1,7 @@
 package com.ragazm.ledd.controller
 
 import com.pi4j.io.gpio.*
+import com.ragazm.ledd.sensors.BME280
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -8,8 +9,15 @@ import org.springframework.web.bind.annotation.RestController
 class LEDController {
 
     @RequestMapping("/")
-    fun greeting(): String {
-        return "Hello Bitch!!"
+    fun greeting() = "Hello Bitch!!"
+
+
+    @RequestMapping("/temperature")
+    fun temperature(): String {
+        var doubleTemp = BME280.sensor()["Temperature"]
+        var doubleHumidity = BME280.sensor()["Humidity"]
+
+        return doubleTemp.toString() + "<br>" + doubleHumidity.toString()
     }
 
     @RequestMapping("/light")
