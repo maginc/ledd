@@ -176,7 +176,7 @@ public class BME280
        // System.out.println("*********************************************");
 
         HashMap<String, Double> hashMap = new HashMap<>();
-        hashMap.put("Temperature",cTemp);
+        hashMap.put("Temperature", cTemp);
         hashMap.put("Humidity", humidity);
         return hashMap;
     }

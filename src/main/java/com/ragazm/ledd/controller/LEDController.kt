@@ -10,29 +10,24 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class LEDController {
 
-   // @RequestMapping("/")
-    //fun greeting() = "index"
 
-
+    /**
     @RequestMapping("/temperature")
     fun temperature(): String {
-        var doubleTemp = BME280.sensor()["Temperature"]
-        var doubleHumidity = BME280.sensor()["Humidity"]
+    var doubleTemp = BME280.sensor()["Temperature"]
+    var doubleHumidity = BME280.sensor()["Humidity"]
 
-        return doubleTemp.toString() + "<br>" + doubleHumidity.toString()
+    return doubleTemp.toString() + "<br>" + doubleHumidity.toString()
     }
 
-
+     **/
     @ResponseBody
     @RequestMapping("/sensors", method = [RequestMethod.GET], produces = ["application/json"])
-    fun getSensorValues(): Map<String, String>{
+    fun getSensorValues(): HashMap<String, Any?> {
 
-        var doubleTemp = BME280.sensor()["Temperature"]
-        var doubleHumidity = BME280.sensor()["Humidity"]
 
-        return hashMapOf("temperature" to doubleTemp.toString(),
-                          "humidity" to doubleHumidity.toString())
-    }
+    return hashMapOf("temperature" to BME280.sensor()["Temperature"],"humidity" to BME280.sensor()["Humidity"])
+}
 
 
     @RequestMapping("/light")

@@ -5,21 +5,19 @@
     <title>MyTitle</title>
 </head>
 <body>
-<h1>Sup?</h1>
-
-<button onclick="myFunction()">Click me</button>
-
-<h2>This table has no borders:</h2>
 <table>
     <tr>
-        <td>Temperature: </td>
+        <td><span style="font-size: large; font-weight: bold;">Temperature: </span></td>
         <td id="temperature">No data</td>
     </tr>
     <tr>
-        <td>Humidity: </td>
+        <td><span style="font-size: large; font-weight: bold;">Humidity: </span></td>
         <td id="humidity">No data</td>
     </tr>
 </table>
+
+<button onclick="myFunction()">Click me</button>
+
 
 <p id="text">Sample text</p>
 
@@ -42,10 +40,9 @@
                 return response.json();
             })
             .then(function(myJson) {
-                var object = JSON.stringify(myJson)
 
-                document.getElementById("temperature").innerHTML = myJson.temperature;
-                document.getElementById("humidity").innerHTML = myJson.humidity;
+                document.getElementById("temperature").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.temperature.toFixed(2) +'</span>';
+                document.getElementById("humidity").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.humidity.toFixed(2) +'</span>';
 
             });
     }
