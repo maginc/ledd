@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MyTitle</title>
+    <title>Sensors</title>
 </head>
 <body>
+
+<h4>Current Time: <span id="time" /></h4>
 <table>
     <tr>
         <td><span style="font-size: large; font-weight: bold;">Temperature: </span></td>
@@ -16,7 +18,7 @@
     </tr>
 </table>
 
-<button onclick="myFunction()">Click me</button>
+<button onclick="switchPin({pin1:1})">Click me</button>
 
 
 <p id="text">Sample text</p>
@@ -24,14 +26,37 @@
 
 <script>
 
-    setInterval(function(){
-        getSensorValues()
-    }, 2000);
+   // setInterval(function(){
+     //   getSensorValues()
+    //}, 3000);
+
+    //setInterval(function(){
+    //    getTime()
+    //}, 1000);
+
+    function getTime() {
+        document.getElementById('time').innerHTML= new Date().toLocaleString('en-GB')
+    }
 
 
     function myFunction() {
         document.getElementById("text").innerHTML = "fuck it";
     }
+
+    function switchPin(parameters) {
+        console.log('Posted data:' + JSON.stringify(parameters));
+        fetch('/pincontrol', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify(parameters)
+        }).then(function(response) {
+            return console.log("response" + JSON.stringify(response));
+        });
+    }
+
 
     function getSensorValues() {
 
