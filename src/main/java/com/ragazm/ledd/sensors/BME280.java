@@ -7,7 +7,11 @@ import com.pi4j.io.i2c.I2CFactory;
 import java.io.IOException;
 import java.util.HashMap;
 
-
+/**
+ * Created by Andris
+ * Date: 21-Jan-19
+ * Time: 21:03
+ */
 
 public class BME280
 {

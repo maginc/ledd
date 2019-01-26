@@ -4,40 +4,216 @@
     <meta charset="UTF-8">
     <title>Sensors</title>
 </head>
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
 <body>
+
 
 <h4>Current Time: <span id="time" /></h4>
 <table>
     <tr>
-        <td><span style="font-size: large; font-weight: bold;">Temperature: </span></td>
+        <td><span style="font-size: large; font-weight: bold;">Ambient temp: </span></td>
         <td id="temperature">No data</td>
     </tr>
     <tr>
         <td><span style="font-size: large; font-weight: bold;">Humidity: </span></td>
         <td id="humidity">No data</td>
     </tr>
+    <tr>
+        <td><span style="font-size: large; font-weight: bold;">Water temp : </span></td>
+        <td id="watertemp">No data</td>
+    </tr>
+    <tr>
+        <td><span style="font-size: large; font-weight: bold;">Temperature 2: </span></td>
+        <td id="watertemp2">No data</td>
+    </tr>
+</table>
+<br>
+<div>
+<h4>Timers: </h4>
+<table style="text-align:center;">
+    <tr>
+        <td>Relay #</td>
+        <td>Time ON</td>
+        <td>Time OFF</td>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td id="relay1OnTime">16:45</td>
+        <td id="relay1OffTime">8:30</td>
+        <td id="relay1Description">no description</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td id="relay2OnTime">N/A</td>
+        <td id="relay2OffTime">N/A</td>
+        <td id="relay2Description">no description</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td id="relay3OnTime">N/A</td>
+        <td id="relay3OffTime">N/A</td>
+        <td id="relay3Description">no description</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td id="relay4OnTime">N/A</td>
+        <td id="relay4OffTime">N/A</td>
+        <td id="relay4Description">no description</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td id="relay5OnTime">N/A</td>
+        <td id="relay5OffTime">N/A</td>
+        <td id="relay5Description">no description</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td id="relay6OnTime">N/A</td>
+        <td id="relay6OffTime">N/A</td>
+        <td id="relay6Description">no description</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td id="relay7OnTime">6:30</td>
+        <td id="relay7OffTime">18:30</td>
+        <td id="relay7Description">no description</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td id="relay8OnTime">N/A</td>
+        <td id="relay8OffTime">N/A</td>
+        <td id="relay8Description">no description</td>
+    </tr>
+
+</table>
+    <br>
+</div>
+<div id="dialog-form">
+    <form id="myForm" >
+        Relay number:  <select id="relayNumber">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+    </select> <br>
+        Timer ON: <input id="timerOn" type="time" name="turnOn" value="12:00"><br>
+        timer OFF: <input id="timerOff" type="time" name="turnOff" value="12:00"><br>
+        Description: <input id="timerDescription" type="text" name="description" value="no description"><br><br>
+        <input type="button" onclick="submitTimer()" value="Change Timer">
+    </form>
+
+</div>
+
+<h4>Manual relay control:</h4>
+<table>
+    <tr style="text-align:center;">
+        <td id="relay1">N/A</td>
+        <td id="relay2">N/A</td>
+        <td id="relay3">N/A</td>
+        <td id="relay4">N/A</td>
+        <td id="relay5">N/A</td>
+        <td id="relay6">N/A</td>
+        <td id="relay7">N/A</td>
+        <td id="relay8">N/A</td>
+
+    </tr>
+    <tr>
+        <td><button onclick="switchPin({pinNumber:1})">Relay 1</button> </td>
+        <td><button onclick="switchPin({pinNumber:2})">Relay 2</button> </td>
+        <td><button onclick="switchPin({pinNumber:3})">Relay 3</button> </td>
+        <td><button onclick="switchPin({pinNumber:4})">Relay 4</button> </td>
+        <td><button onclick="switchPin({pinNumber:5})">Relay 5</button> </td>
+        <td><button onclick="switchPin({pinNumber:6})">Relay 6</button> </td>
+        <td><button onclick="switchPin({pinNumber:7})">Relay 7</button> </td>
+        <td><button onclick="switchPin({pinNumber:8})">Relay 8</button> </td>
+
+    </tr>
 </table>
 
-<button onclick="switchPin({pin1:1})">Click me</button>
 
-
-<p id="text">Sample text</p>
+<button onclick="getTime()">Check this out!!</button>
 
 
 <script>
 
-   // setInterval(function(){
-     //   getSensorValues()
-    //}, 3000);
-
-    //setInterval(function(){
-    //    getTime()
-    //}, 1000);
-
-    function getTime() {
-        document.getElementById('time').innerHTML= new Date().toLocaleString('en-GB')
+   // const cors = "http://192.168.0.100:8080"
+    const cors = "http://localhost:8080"
+/**
+    window.onload = function(){
+        getAllRelayState()
     }
 
+
+    setInterval(function(){
+        getSensorValues()
+    }, 3000);
+
+
+
+    setInterval(function(){
+        getW1SensorValue("28-0417c2adaeff")
+    }, 3000);
+
+    setInterval(function(){
+        getW1SensorValue2("28-02099177ce91")
+    }, 3000);
+**/
+
+setInterval(function(){
+    getTime()
+}, 1000);
+
+    function getTime() {
+        fetch(cors + '/time')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                document.getElementById('time').innerHTML= myJson.time
+            });
+    }
+
+    function submitTimer() {
+        var relayNumber = document.getElementById("relayNumber").value;
+        var timerOn = document.getElementById("timerOn").value;
+        var timerOff = document.getElementById("timerOff").value;
+        var timerDescription = document.getElementById("timerDescription").value;
+
+        var obj = new Object();
+        obj.relayNumber = relayNumber;
+        obj.timerOn  = timerOn;
+        obj.timerOff = timerOff;
+        obj.timerDescription = timerDescription
+        var jsonString= JSON.stringify(obj);
+
+        fetch(cors+ '/timer', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify(obj)
+        }).then(function(response) {
+            return response.json();
+        }).then(function(myResponse){
+
+            console.log("response : " + myResponse.response)
+
+
+        });
+        console.log(jsonString)
+
+
+    }
 
     function myFunction() {
         document.getElementById("text").innerHTML = "fuck it";
@@ -45,7 +221,7 @@
 
     function switchPin(parameters) {
         console.log('Posted data:' + JSON.stringify(parameters));
-        fetch('/pincontrol', {
+        fetch(cors+ '/pincontrol', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -53,14 +229,35 @@
             method: 'post',
             body: JSON.stringify(parameters)
         }).then(function(response) {
-            return console.log("response" + JSON.stringify(response));
+            return response.json();
+        }).then(function(myResponse){
+
+            console.log("response : " + myResponse.response)
+            setRelayOnOffText(myResponse.response)
+
         });
     }
 
 
+    function setRelayOnOffText(relayResponse){
+
+        let relayNumber = relayResponse.charAt(0)
+        let relayState
+        if(relayResponse.charAt(1) === "1"){
+            relayState = "OFF"
+        }else if(relayResponse.charAt(1) ==="0"){
+            relayState = "ON"
+
+        }
+
+        console.log(relayNumber + " - " +relayState );
+        document.getElementById("relay"+relayNumber).innerHTML = relayState;
+
+    }
+
     function getSensorValues() {
 
-        fetch('/sensors')
+        fetch(cors + '/sensors')
             .then(function(response) {
                 return response.json();
             })
@@ -68,6 +265,55 @@
 
                 document.getElementById("temperature").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.temperature.toFixed(2) +'</span>';
                 document.getElementById("humidity").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.humidity.toFixed(2) +'</span>';
+
+            });
+    }
+
+    function getW1SensorValue(sensorId) {
+
+        fetch(cors + '/w1sensors/'+sensorId)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+
+                document.getElementById("watertemp").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.temperature.toFixed(2) +'</span>';
+
+
+            });
+    }
+
+    function getW1SensorValue2(sensorId) {
+
+        fetch(cors + '/w1sensors/'+sensorId)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+
+                document.getElementById("watertemp2").innerHTML = '<span style="font-size: large; font-weight: bold;">' +myJson.temperature.toFixed(2) +'</span>';
+
+
+            });
+    }
+
+    function getAllRelayState() {
+
+        fetch(cors + '/checkallrelaystate')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+
+                console.log(myJson.relay1)
+                setRelayOnOffText(myJson.relay1)
+                setRelayOnOffText(myJson.relay2)
+                setRelayOnOffText(myJson.relay3)
+                setRelayOnOffText(myJson.relay4)
+                setRelayOnOffText(myJson.relay5)
+                setRelayOnOffText(myJson.relay6)
+                setRelayOnOffText(myJson.relay7)
+                setRelayOnOffText(myJson.relay8)
 
             });
     }
