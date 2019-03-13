@@ -1,6 +1,7 @@
 package com.ragazm.ledd
 
 import com.ragazm.ledd.controller.Relay
+import com.ragazm.ledd.persistance.TimerRepository
 import com.ragazm.ledd.model.PinJson
 import com.ragazm.ledd.model.TimerModel
 import com.ragazm.ledd.sensors.BME280
@@ -20,8 +21,12 @@ import java.time.format.DateTimeFormatter
  */
 @CrossOrigin
 @RestController
-class MainController {
+class MainController(private val timerRepository: TimerRepository)
+{
     private val logger = LoggerFactory.getLogger(MainController::class.java)
+
+    @RequestMapping("/timertimetable", method = [RequestMethod.GET], produces = ["application/json"])
+    fun getTimerTimeTable() = listOf(timerRepository.findAll())
 
     @RequestMapping("/sensors", method = [RequestMethod.GET], produces = ["application/json"])
     fun getSensorValues() = hashMapOf("temperature" to BME280.sensor()["Temperature"], "humidity" to BME280.sensor()["Humidity"])
@@ -77,7 +82,7 @@ class MainController {
     fun timer(@RequestBody timer: TimerModel): String {
         val result = JSONObject()
 
-        CreateTimer(timer)
+        CreateTimer(timer, timerRepository)
 
         result.put("response", "ok")
 

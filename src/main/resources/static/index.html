@@ -31,10 +31,11 @@
         <td id="watertemp2">No data</td>
     </tr>
 </table>
-<br>
+<div>
 <div>
 <h4>Timers: </h4>
-<table style="text-align:center;">
+<table style="text-align:center; float: left;
+      width: 50%;">
     <tr>
         <td>Relay #</td>
         <td>Time ON</td>
@@ -91,9 +92,11 @@
     </tr>
 
 </table>
-    <br>
 </div>
-<div id="dialog-form">
+
+
+<div id="dialog-form"; style="float: right;
+      width: 50%;">
     <form id="myForm" >
         Relay number:  <select id="relayNumber">
         <option value="1">1</option>
@@ -106,13 +109,16 @@
         <option value="8">8</option>
     </select> <br>
         Timer ON: <input id="timerOn" type="time" name="turnOn" value="12:00"><br>
-        timer OFF: <input id="timerOff" type="time" name="turnOff" value="12:00"><br>
+        Timer OFF: <input id="timerOff" type="time" name="turnOff" value="12:00"><br>
         Description: <input id="timerDescription" type="text" name="description" value="no description"><br><br>
         <input type="button" onclick="submitTimer()" value="Change Timer">
     </form>
 
 </div>
+</div>
 
+<div style="float: left;
+      width: 100%;">
 <h4>Manual relay control:</h4>
 <table>
     <tr style="text-align:center;">
@@ -140,16 +146,48 @@
 </table>
 
 
-<button onclick="getTime()">Check this out!!</button>
-
+<button onclick="getTimerTimeTable()">Check this out!!</button>
+</div>
 
 <script>
 
+    // const cors = "http://192.168.0.100:8080"
+    //  const cors = "http://localhost:8080"
+    const cors =""
+
+    function getTimerTimeTable() {
+
+        fetch(cors + '/timertimetable')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+               var lol = myJson[0];
+                for (var i = 0; i < lol.length; i++) {
+
+                    var result = lol[i]
+
+                    document.getElementById("relay"+result.relay_number+"OnTime").innerHTML = result.time_on;
+                    document.getElementById("relay"+result.relay_number+"OffTime").innerHTML = result.time_off;
+                    document.getElementById("relay"+result.relay_number+"Description").innerHTML = result.description;
+
+                    console.log(result)
+                    console.log("suka")
+                    //Do something
+                }
+            });
+
+
+
+    }
+
    // const cors = "http://192.168.0.100:8080"
-    const cors = "http://localhost:8080"
-/**
+  //  const cors = "http://localhost:8080"
+
     window.onload = function(){
         getAllRelayState()
+        getTimerTimeTable()
+
     }
 
 
@@ -166,7 +204,7 @@
     setInterval(function(){
         getW1SensorValue2("28-02099177ce91")
     }, 3000);
-**/
+
 
 setInterval(function(){
     getTime()
@@ -188,11 +226,19 @@ setInterval(function(){
         var timerOff = document.getElementById("timerOff").value;
         var timerDescription = document.getElementById("timerDescription").value;
 
+        document.getElementById("relay"+relayNumber+"OnTime").innerHTML = timerOn;
+        document.getElementById("relay"+relayNumber+"OffTime").innerHTML = timerOff;
+        document.getElementById("relay"+relayNumber+"Description").innerHTML = timerDescription;
+
+
+
         var obj = new Object();
         obj.relayNumber = relayNumber;
         obj.timerOn  = timerOn;
         obj.timerOff = timerOff;
         obj.timerDescription = timerDescription
+
+
         var jsonString= JSON.stringify(obj);
 
         fetch(cors+ '/timer', {
@@ -211,6 +257,8 @@ setInterval(function(){
 
         });
         console.log(jsonString)
+
+
 
 
     }
